@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trail Manager — Guide d'installation et d'utilisation</title>
+<style>
+  :root {
+    --ground: #EEF2EC;
+    --paper: #F8FAF7;
+    --text: #15241B;
+    --muted: #4A5C50;
+    --accent: #D8402F;       /* rouge balise GR */
+    --accent-2: #6B7F6E;     /* vert lichen / courbes de niveau */
+    --line: #D3DBD2;
+    --watch: #0B0E0C;
+    --up: #E8742E;           /* triangle D+ (orange, comme sur la montre) */
+    --down: #3E78C8;         /* triangle D- (bleu) */
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--ground); color: var(--text);
+    font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  #topo { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.5; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 22px 80px; }
+
+  header.hero { padding: 64px 0 36px; text-align: center; }
+  .badge {
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); border: 1.5px solid var(--accent);
+    border-radius: 999px; padding: 5px 14px; margin-bottom: 22px;
+  }
+  h1 {
+    font-size: clamp(40px, 9vw, 72px); line-height: 0.95; letter-spacing: -0.02em;
+    font-weight: 800; text-transform: uppercase; margin: 0 0 14px;
+  }
+  h1 .accent { color: var(--accent); }
+  .lede { font-size: clamp(17px, 2.4vw, 20px); color: var(--muted); max-width: 32ch; margin: 0 auto 38px; }
+
+  .watch {
+    width: 220px; height: 220px; border-radius: 50%; background: var(--watch); margin: 0 auto;
+    box-shadow: 0 0 0 10px #1d211e, 0 18px 40px rgba(0,0,0,0.28);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px; color: #fff;
+  }
+  .watch .cp-name { font-size: 13px; color: #c7cdc8; letter-spacing: 0.03em; }
+  .watch .dist { font-size: 42px; font-weight: 800; line-height: 1; }
+  .watch .row { display: flex; gap: 22px; align-items: center; font-size: 15px; font-weight: 600; }
+  .watch .seg { display: inline-flex; align-items: center; gap: 6px; }
+  .tri { width: 0; height: 0; }
+  .tri.up { border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 12px solid var(--up); }
+  .tri.down { border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 12px solid var(--down); }
+  .clockface { width: 13px; height: 13px; border-radius: 50%; border: 2px solid #fff; position: relative; }
+  .clockface::before, .clockface::after {
+    content: ""; position: absolute; background: #fff; left: 50%; top: 50%; transform-origin: left center;
+  }
+  .clockface::before { width: 4px; height: 2px; transform: translate(-1px,-1px) rotate(-90deg); }
+  .clockface::after  { width: 4px; height: 2px; transform: translate(-1px,-1px) rotate(0deg); }
+  .watch .time { display: inline-flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 700; }
+
+  section { padding: 30px 0; }
+  h2 { font-size: clamp(22px, 4vw, 30px); letter-spacing: -0.01em; font-weight: 800; margin: 0 0 6px; }
+  .section-head { border-top: 2px solid var(--text); padding-top: 18px; margin-bottom: 8px; }
+
+  /* Downloads */
+  .downloads { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  @media (max-width: 520px) { .downloads { grid-template-columns: 1fr; } }
+  .dl {
+    display: block; text-decoration: none; color: var(--text); background: var(--paper);
+    border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; transition: border-color .15s;
+  }
+  .dl:hover { border-color: var(--accent); }
+  .dl .k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-2); font-weight: 700; }
+  .dl .t { font-size: 19px; font-weight: 800; margin: 4px 0 2px; }
+  .dl .s { font-size: 13px; color: var(--muted); }
+  .dl .cta { display: inline-block; margin-top: 12px; font-weight: 700; color: var(--accent); }
+
+  .need { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-top: 8px; }
+  .need ul { margin: 10px 0 0; padding-left: 0; list-style: none; }
+  .need li { padding: 7px 0 7px 30px; position: relative; border-bottom: 1px solid var(--line); }
+  .need li:last-child { border-bottom: 0; }
+  .need li::before { content: ""; position: absolute; left: 4px; top: 14px; width: 9px; height: 9px; border-radius: 2px; background: var(--accent-2); }
+
+  .step { display: flex; gap: 20px; align-items: flex-start; padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .step:last-child { border-bottom: 0; }
+  .blaze { flex: 0 0 auto; width: 30px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 4px; }
+  .blaze .mark { width: 22px; height: 34px; border-radius: 3px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.12); display: flex; flex-direction: column; }
+  .blaze .mark .r { background: var(--accent); height: 50%; }
+  .blaze .mark .w { background: #fff; height: 50%; }
+  .blaze .num { font-weight: 800; font-size: 15px; color: var(--muted); }
+  .step .body { flex: 1; min-width: 0; }
+  .step h3 { margin: 2px 0 6px; font-size: 19px; font-weight: 700; }
+  .step p { margin: 0 0 8px; }
+  .step ol { margin: 8px 0; padding-left: 20px; }
+  .step li { margin: 4px 0; }
+  .step .tip {
+    font-size: 14px; color: var(--muted); background: var(--paper); border-left: 3px solid var(--accent-2);
+    border-radius: 0 8px 8px 0; padding: 8px 12px; margin-top: 10px;
+  }
+  .ui { font-weight: 700; color: var(--text); }
+  code { background: #e3e8e2; padding: 1px 6px; border-radius: 5px; font-size: 0.92em; }
+
+  .annot { display: grid; gap: 14px; margin-top: 12px; }
+  .annot .item { display: flex; gap: 12px; align-items: baseline; }
+  .annot .item b { color: var(--accent); flex: 0 0 auto; min-width: 84px; }
+
+  .faq details { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 4px 16px; margin-bottom: 10px; }
+  .faq summary { cursor: pointer; font-weight: 700; padding: 12px 0; list-style: none; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::before { content: "+  "; color: var(--accent); font-weight: 800; }
+  .faq details[open] summary::before { content: "–  "; }
+  .faq p { margin: 0 0 14px; color: var(--muted); }
+
+  footer { text-align: center; color: var(--muted); font-size: 14px; padding-top: 30px; border-top: 2px solid var(--text); margin-top: 10px; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<canvas id="topo" aria-hidden="true"></canvas>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="badge">Version bêta · test</div>
+    <h1>Trail<span class="accent">·</span>Manager</h1>
+    <p class="lede">Préparez votre parcours sur le téléphone, suivez chaque checkpoint sur votre montre Garmin.</p>
+    <div class="watch" role="img" aria-label="Aperçu écran montre : Ravito 1, 700 mètres, plus 120 mètres de montée, zéro de descente, 59:13 restantes">
+      <span class="cp-name">Ravito 1</span>
+      <span class="dist">700 m</span>
+      <span class="row">
+        <span class="seg"><span class="tri up"></span>120 m</span>
+        <span class="seg"><span class="tri down"></span>0 m</span>
+      </span>
+      <span class="time"><span class="clockface"></span>59:13</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head"><h2>Téléchargements</h2></div>
+    <p style="color:var(--muted);margin:0">Deux fichiers à installer — aucun store nécessaire.</p>
+    <div class="downloads">
+      <a class="dl" href="./trail-manager.apk" download>
+        <div class="k">Téléphone · Android</div>
+        <div class="t">Application (.apk)</div>
+        <div class="s">Pour préparer et envoyer le parcours.</div>
+        <span class="cta">Télécharger ↓</span>
+      </a>
+      <a class="dl" href="./trail-manager-enduro3.prg" download>
+        <div class="k">Montre · Connect IQ</div>
+        <div class="t">Écran montre (.prg)</div>
+        <div class="s">Pour l'Enduro 3. (Autres modèles : voir avec l'organisateur.)</div>
+        <span class="cta">Télécharger ↓</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Ce qu'il vous faut</h2></div>
+    <div class="need">
+      <ul>
+        <li>Une montre <strong>Garmin</strong> compatible (Fenix, Epix ou Enduro).</li>
+        <li>Un <strong>câble USB</strong> et un ordinateur (pour installer sur la montre).</li>
+        <li>Un téléphone <strong>Android</strong> avec <strong>Garmin Connect</strong>, montre déjà appairée.</li>
+        <li>Un fichier de parcours <strong>GPX</strong> (votre trace de trail).</li>
+        <li>Environ <strong>10 minutes</strong>, une seule fois.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Installation</h2></div>
+
+    <div class="step">
+      <div class="blaze"><span class="mark"><span class="r"></span><span class="w"></span></span><span class="num">01</span></div>
+      <div class="body">
+        <h3>Installer l'application sur le téléphone</h3>
+        <ol>
+          <li>Touchez <strong>Télécharger</strong> sur le fichier <span class="ui">.apk</span> ci-dessus, depuis votre téléphone.</li>
+          <li>Ouvrez le fichier téléchargé. Android demande l'autorisation d'installer depuis cette source — acceptez.</li>
+          <li>Touchez <span class="ui">Installer</span>.</li>
+        </ol>
+        <div class="tip">C'est l'application qui sert à préparer le parcours et à l'envoyer à la montre.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="blaze"><span class="mark"><span class="r"></span><span class="w"></span></span><span class="num">02</span></div>
+      <div class="body">
+        <h3>Installer l'écran sur la montre</h3>
+        <ol>
+          <li>Téléchargez le fichier <span class="ui">.prg</span> (sur un ordinateur).</li>
+          <li>Branchez la montre à l'ordinateur avec le câble USB. Un disque <code>GARMIN</code> apparaît.</li>
+          <li>Copiez le fichier <span class="ui">.prg</span> dans le dossier <code>GARMIN/APPS</code> de la montre.</li>
+          <li>Éjectez proprement le disque, puis débranchez la montre.</li>
+        </ol>
+        <div class="tip">Le fichier dépend du modèle de montre. Pour un modèle autre que l'Enduro 3, demandez le bon fichier à l'organisateur.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Utilisation</h2></div>
+
+    <div class="step">
+      <div class="blaze"><span class="mark"><span class="r"></span><span class="w"></span></span><span class="num">03</span></div>
+      <div class="body">
+        <h3>Préparer le parcours</h3>
+        <p>Ouvrez <span class="ui">Trail Manager</span> sur le téléphone, touchez <span class="ui">Charger un GPX</span> et choisissez votre trace. Les checkpoints (ravitos, sommets…) s'affichent : vous pouvez en <strong>supprimer</strong>, en <strong>ajouter</strong>, ou fixer un <strong>temps limite</strong> (icône ⏱).</p>
+        <div class="tip">Pas de fichier GPX ? C'est la trace GPS du parcours, exportable depuis votre montre, Komoot, Strava… ou fournie par l'organisateur.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="blaze"><span class="mark"><span class="r"></span><span class="w"></span></span><span class="num">04</span></div>
+      <div class="body">
+        <h3>Envoyer le parcours à la montre</h3>
+        <p>Touchez <span class="ui">Rechercher les montres</span>, choisissez la vôtre, puis <span class="ui">Envoyer</span>. Patientez jusqu'à <span class="ui">Envoyé ✓</span>. La montre doit être allumée et connectée en Bluetooth au téléphone.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="blaze"><span class="mark"><span class="r"></span><span class="w"></span></span><span class="num">05</span></div>
+      <div class="body">
+        <h3>Pendant la course</h3>
+        <p>Sur la montre, démarrez une activité <strong>Trail / Course à pied</strong>. Ajoutez l'écran <span class="ui">Trail Manager</span> à vos écrans de données (réglages de l'activité → <span class="ui">Écrans de données</span> → <span class="ui">Ajouter</span>), puis faites défiler jusqu'à cet écran pendant l'effort.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Sur la montre, vous voyez…</h2></div>
+    <div class="annot">
+      <div class="item"><b>Nom</b><span>le prochain checkpoint à atteindre (ex. <em>Ravito 1</em>).</span></div>
+      <div class="item"><b>Distance</b><span>les mètres ou kilomètres restants pour y arriver.</span></div>
+      <div class="item"><b>▲ / ▼</b><span>le dénivelé restant : montée (orange) et descente (bleu).</span></div>
+      <div class="item"><b>⏱ Temps</b><span>le temps restant avant le temps limite, s'il y en a un.</span></div>
+      <div class="item"><b>Terminé !</b><span>s'affiche une fois le dernier checkpoint passé.</span></div>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="section-head"><h2>En cas de souci</h2></div>
+    <details>
+      <summary>« Installation bloquée » sur Android</summary>
+      <p>Android protège contre les installations hors store : autorisez « installer des applications inconnues » pour l'application depuis laquelle vous ouvrez le fichier (navigateur ou gestionnaire de fichiers), puis réessayez.</p>
+    </details>
+    <details>
+      <summary>L'écran de la montre affiche « Recherche GPS… »</summary>
+      <p>La montre cherche encore le signal GPS. Sortez à ciel ouvert et patientez : l'écran se remplit dès que la position est trouvée.</p>
+    </details>
+    <details>
+      <summary>L'écran affiche « Pas de parcours »</summary>
+      <p>Aucun parcours n'a encore été reçu. Refaites l'envoi depuis l'application téléphone (étape 04).</p>
+    </details>
+    <details>
+      <summary>L'envoi depuis le téléphone ne marche pas</summary>
+      <p>Vérifiez que <span class="ui">Garmin Connect</span> est installé, que la montre est allumée et connectée en Bluetooth, puis réessayez <span class="ui">Rechercher les montres</span>.</p>
+    </details>
+    <details>
+      <summary>Je ne trouve pas le dossier GARMIN/APPS</summary>
+      <p>La montre doit être en mode « stockage de masse » (automatique sur la plupart des modèles dès qu'elle est branchée). Le dossier est <code>GARMIN/APPS</code> à la racine du disque <code>GARMIN</code>.</p>
+    </details>
+  </section>
+
+  <footer>Trail Manager · application de test — vos retours sont les bienvenus auprès de l'organisateur. 🥾</footer>
+</div>
+
+<script>
+  (function () {
+    var c = document.getElementById('topo'), ctx = c.getContext('2d');
+    function draw() {
+      var w = c.width = window.innerWidth, h = c.height = window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = '#6B7F6E'; ctx.globalAlpha = 0.22; ctx.lineWidth = 1;
+      var cx = w * 0.82, cy = h * 0.26;
+      for (var i = 1; i <= 26; i++) {
+        var r = i * 34; ctx.beginPath();
+        for (var a = 0; a <= Math.PI * 2 + 0.05; a += 0.12) {
+          var wob = Math.sin(a * 3 + i * 0.6) * 10 + Math.cos(a * 2 - i) * 7;
+          var x = cx + (r + wob) * Math.cos(a), y = cy + (r + wob) * 0.7 * Math.sin(a);
+          if (a === 0) { ctx.moveTo(x, y); } else { ctx.lineTo(x, y); }
+        }
+        ctx.stroke();
+      }
+    }
+    draw();
+    var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 150); });
+  })();
+</script>
+</body>
+</html>
