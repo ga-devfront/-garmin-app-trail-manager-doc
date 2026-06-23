@@ -33,9 +33,11 @@
     text-transform: uppercase; color: var(--accent); border: 1.5px solid var(--accent);
     border-radius: 999px; padding: 5px 14px; margin-bottom: 22px;
   }
+  .wordmark { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 0 0 14px; }
+  .wordmark .logo { width: clamp(54px, 11vw, 80px); height: auto; border-radius: 16px; flex: 0 0 auto; }
   h1 {
     font-size: clamp(40px, 9vw, 72px); line-height: 0.95; letter-spacing: -0.02em;
-    font-weight: 800; text-transform: uppercase; margin: 0 0 14px;
+    font-weight: 800; text-transform: uppercase; margin: 0;
   }
   h1 .accent { color: var(--accent); }
   .lede { font-size: clamp(17px, 2.4vw, 20px); color: var(--muted); max-width: 32ch; margin: 0 auto 38px; }
@@ -127,7 +129,10 @@
 
   <header class="hero">
     <div class="badge">Version bêta · test</div>
-    <h1>Trail<span class="accent">·</span>Manager</h1>
+    <div class="wordmark">
+      <img class="logo" src="./logo.png" alt="Logo Trail Manager" width="88" height="88">
+      <h1>Trail<span class="accent">·</span>Manager</h1>
+    </div>
     <p class="lede">Préparez votre parcours sur le téléphone, suivez chaque checkpoint sur votre montre Garmin.</p>
     <div class="watch" role="img" aria-label="Aperçu écran montre : Ravito 1, 700 mètres, plus 120 mètres de montée, zéro de descente, 59:13 restantes">
       <span class="cp-name">Ravito 1</span>
@@ -145,9 +150,9 @@
     <p style="color:var(--muted);margin:0">Deux fichiers à installer — aucun store nécessaire.</p>
     <div class="downloads">
       <a class="dl" href="./trail-manager.apk" download>
-        <div class="k">Téléphone · Android · v0.1.1</div>
+        <div class="k">Téléphone · Android · v0.1.2</div>
         <div class="t">Application (.apk)</div>
-        <div class="s">Pour préparer et envoyer le parcours. Version affichée dans l'app via le bouton ⓘ.</div>
+        <div class="s">Pour préparer et envoyer le parcours.</div>
         <span class="cta">Télécharger ↓</span>
       </a>
       <a class="dl" href="./trail-manager-enduro3.prg" download>
