@@ -256,8 +256,16 @@
   <section class="faq">
     <div class="section-head"><h2>En cas de souci</h2></div>
     <details>
-      <summary>« Installation bloquée » sur Android</summary>
-      <p>Android protège contre les installations hors store : autorisez « installer des applications inconnues » pour l'application depuis laquelle vous ouvrez le fichier (navigateur ou gestionnaire de fichiers), puis réessayez.</p>
+      <summary>« Application non installée » (Android récent)</summary>
+      <p>Sur Android 13 et plus, <strong>Play Protect</strong> bloque souvent l'installation même après avoir touché « Installer quand même » — le message « Application non installée » apparaît alors. Le geste « Installer quand même » ne suffit pas : il faut désactiver l'analyse le temps de l'installation.</p>
+      <p><strong>La marche à suivre :</strong></p>
+      <ol>
+        <li>Ouvrez le <span class="ui">Play Store</span> → votre photo de profil (en haut à droite) → <span class="ui">Play Protect</span>.</li>
+        <li>Touchez la roue dentée ⚙️ → désactivez <span class="ui">Analyser les applis avec Play Protect</span>.</li>
+        <li>Réinstallez le fichier <code>.apk</code> : cette fois l'installation passe.</li>
+        <li>Vous pouvez <strong>réactiver</strong> Play Protect ensuite.</li>
+      </ol>
+      <p class="tip" style="margin-top:10px">Vérifiez aussi que l'app depuis laquelle vous ouvrez le fichier (Chrome ou <span class="ui">Fichiers</span>) a le droit « installer des applications inconnues ». Ouvrir l'<code>.apk</code> depuis l'app <span class="ui">Fichiers</span> est souvent plus fiable que depuis la notification du navigateur.</p>
     </details>
     <details>
       <summary>L'écran de la montre affiche « Recherche GPS… »</summary>
