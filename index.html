@@ -79,6 +79,14 @@
   .dl .t { font-size: 19px; font-weight: 800; margin: 4px 0 2px; }
   .dl .s { font-size: 13px; color: var(--muted); }
   .dl .cta { display: inline-block; margin-top: 12px; font-weight: 700; color: var(--accent); }
+  .beta {
+    display: block; text-decoration: none; background: var(--accent); color: #fff;
+    border-radius: 14px; padding: 18px 22px; margin: 14px 0 6px; transition: filter .15s;
+  }
+  .beta:hover { filter: brightness(1.07); }
+  .beta .bt { font-size: 19px; font-weight: 800; }
+  .beta .bs { font-size: 13px; opacity: 0.92; margin-top: 3px; }
+  .beta, .beta:visited { color: #fff; }
 
   .need { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-top: 8px; }
   .need ul { margin: 10px 0 0; padding-left: 0; list-style: none; }
@@ -147,12 +155,18 @@
 
   <section>
     <div class="section-head"><h2>Téléchargements</h2></div>
-    <p style="color:var(--muted);margin:0">Deux fichiers à installer — aucun store nécessaire.</p>
+    <p style="color:var(--muted);margin:0">Application téléphone + écran montre — aucun store nécessaire.</p>
+
+    <a class="beta" href="https://appdistribution.firebase.dev/i/2fd99c83d832c0f1">
+      <div class="bt">📲 Rejoindre la bêta Android (recommandé)</div>
+      <div class="bs">Installation guidée et notifications de mises à jour. Connexion avec un compte Google.</div>
+    </a>
+
     <div class="downloads">
       <a class="dl" href="./trail-manager.apk" download>
         <div class="k">Téléphone · Android · v0.1.3</div>
-        <div class="t">Application (.apk)</div>
-        <div class="s">Pour préparer et envoyer le parcours.</div>
+        <div class="t">Application (.apk) — téléchargement direct</div>
+        <div class="s">Alternative à la bêta. Voir « En cas de souci » si Android bloque l'installation.</div>
         <span class="cta">Télécharger ↓</span>
       </a>
       <a class="dl" href="./trail-manager-enduro3.prg" download>
